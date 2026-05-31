@@ -6,7 +6,6 @@ struct VoiceCaptureSheet: View {
     @Environment(\.dismiss) private var dismiss
 
     @Query(sort: \TaskItem.createdAt, order: .reverse) private var allTasks: [TaskItem]
-    @Query private var statsList: [UserStats]
 
     let checkInType: CheckInType?
 
@@ -15,13 +14,11 @@ struct VoiceCaptureSheet: View {
     @State private var paReply: String?
     @State private var errorMessage: String?
     @State private var createdCount = 0
-    @State private var hasProcessed = false
-    @State private var lastProcessedText = ""
 
     private let hints = [
-        "Remind me to call dentist Tuesday at 2pm",
-        "What's overdue?",
-        "I finished the gym task"
+        "Remind me to buy milk",
+        "Call the dentist",
+        "Pick up dry cleaning"
     ]
 
     var body: some View {
@@ -41,7 +38,7 @@ struct VoiceCaptureSheet: View {
                         if !speechService.transcript.isEmpty {
                             VStack(alignment: .leading, spacing: 6) {
                                 Text("You said")
-                                    .font(.caption)
+                                    .font(.caption.weight(.medium))
                                     .foregroundStyle(AppTheme.textSecondary)
                                 Text(speechService.transcript)
                                     .font(.body)
@@ -54,7 +51,7 @@ struct VoiceCaptureSheet: View {
                         if let paReply {
                             HStack(alignment: .top, spacing: 10) {
                                 Image(systemName: "sparkles")
-                                    .foregroundStyle(AppTheme.accent)
+                                    .foregroundStyle(AppTheme.accentGradient)
                                 Text(paReply)
                                     .font(.body)
                                     .foregroundStyle(AppTheme.textPrimary)
@@ -84,7 +81,7 @@ struct VoiceCaptureSheet: View {
                         if speechService.transcript.isEmpty && !isProcessing {
                             VStack(alignment: .leading, spacing: 8) {
                                 Text("Try saying")
-                                    .font(.caption)
+                                    .font(.caption.weight(.medium))
                                     .foregroundStyle(AppTheme.textSecondary)
                                 ForEach(hints, id: \.self) { hint in
                                     Text("\"\(hint)\"")
@@ -97,27 +94,28 @@ struct VoiceCaptureSheet: View {
                 }
 
                 if isProcessing {
-                    ProgressView("Sending to Nudge…")
+                    ProgressView("Saving task…")
                         .tint(AppTheme.accent)
                 }
 
                 Button {
-                    Task { await submit(dismissAfter: true) }
+                    Task { await submit() }
                 } label: {
                     Text(submitButtonTitle)
                         .font(.headline)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 14)
-                        .background(canSubmit ? AppTheme.accent : AppTheme.cardBackground)
-                        .foregroundStyle(canSubmit ? AppTheme.background : AppTheme.textSecondary)
-                        .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                        .background(canSubmit ? AnyShapeStyle(AppTheme.accentGradient) : AnyShapeStyle(AppTheme.divider.opacity(0.4)))
+                        .foregroundStyle(canSubmit ? .white : AppTheme.textSecondary)
+                        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                 }
                 .disabled(!canSubmit || isProcessing)
             }
             .padding(AppTheme.spacing)
-            .background(AppTheme.background)
+            .appScreenBackground()
             .navigationTitle(checkInType?.label ?? "Voice")
             .navigationBarTitleDisplayMode(.inline)
+            .toolbarBackground(.hidden, for: .navigationBar)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Close") { dismiss() }
@@ -136,16 +134,14 @@ struct VoiceCaptureSheet: View {
     }
 
     private var statusText: String {
-        if isProcessing { return "Processing your request…" }
+        if isProcessing { return "Saving your task…" }
         if speechService.isRecording { return "Listening… tap Send when done" }
-        if hasProcessed { return "Done! Check Today or Inbox" }
+        if createdCount > 0 { return "Added \(createdCount) task\(createdCount == 1 ? "" : "s"). Speak again or tap Close" }
         return "Speak, then tap Send"
     }
 
     private var submitButtonTitle: String {
-        if isProcessing { return "Processing…" }
-        if speechService.isRecording { return "Send" }
-        if hasProcessed { return "Send again" }
+        if isProcessing { return "Saving…" }
         return "Send"
     }
 
@@ -159,7 +155,6 @@ struct VoiceCaptureSheet: View {
             _ = await speechService.stopRecordingAndFinalize()
         } else {
             errorMessage = nil
-            hasProcessed = false
             do {
                 try speechService.startRecording()
             } catch {
@@ -169,11 +164,12 @@ struct VoiceCaptureSheet: View {
     }
 
     @MainActor
-    private func submit(dismissAfter: Bool) async {
+    private func submit() async {
         guard !isProcessing else { return }
 
         isProcessing = true
         errorMessage = nil
+        paReply = nil
 
         let text: String
         if speechService.isRecording {
@@ -188,99 +184,39 @@ struct VoiceCaptureSheet: View {
             return
         }
 
-        if text == lastProcessedText, hasProcessed {
-            isProcessing = false
-            if dismissAfter { dismiss() }
-            return
-        }
-
         await processTranscript(text)
         isProcessing = false
-
-        if dismissAfter, errorMessage == nil {
-            try? await Task.sleep(nanoseconds: 800_000_000)
-            dismiss()
-        }
     }
 
     @MainActor
     private func processTranscript(_ text: String) async {
-        let stats = statsList.first ?? AccountabilityService.ensureStats(in: modelContext)
-        let openTasks = allTasks.filter { !$0.isCompleted }.prefix(20).map {
-            (id: $0.id, title: $0.title, dueDate: $0.dueDate, priority: $0.priority)
-        }
+        let intent = IntentProcessor.sttIntent(from: text)
+        paReply = intent.reply
 
-        let context = PAContext(
-            openTasks: Array(openTasks),
-            currentStreak: stats.currentStreak,
-            checkInType: checkInType
+        let changed = await IntentProcessor.apply(
+            intent,
+            userTranscript: text,
+            allTasks: allTasks,
+            checkInType: checkInType,
+            context: modelContext
         )
+        let added = changed.filter { !$0.isCompleted }.count
+        if added > 0 {
+            createdCount += added
+            prepareForNextCapture()
+        } else {
+            errorMessage = "Couldn't create task. Try rephrasing, e.g. \"Remind me to buy milk\"."
+        }
+    }
 
-        let apiKey = KeychainHelper.loadAPIKey()?.trimmingCharacters(in: .whitespacesAndNewlines)
-
+    @MainActor
+    private func prepareForNextCapture() {
+        speechService.clearTranscript()
         do {
-            let intent: PAIntent
-            if let apiKey, !apiKey.isEmpty {
-                intent = try await GeminiService.shared.processUtterance(text, context: context)
-            } else {
-                intent = localFallbackIntent(for: text)
-                errorMessage = "No API key — saved task locally. Add Gemini key in Settings for smarter parsing."
-            }
-
-            paReply = intent.reply
-            let changed = await IntentProcessor.apply(
-                intent,
-                userTranscript: text,
-                allTasks: allTasks,
-                checkInType: checkInType,
-                context: modelContext
-            )
-            createdCount = changed.filter { !$0.isCompleted }.count
-            hasProcessed = true
-            lastProcessedText = text
-
-            if createdCount == 0, intent.intent == "create_task" {
-                errorMessage = "Couldn't create task. Try rephrasing, e.g. \"Remind me to buy milk tomorrow\"."
-            }
+            try speechService.startRecording()
         } catch {
-            let fallback = localFallbackIntent(for: text)
-            paReply = fallback.reply
-            let changed = await IntentProcessor.apply(
-                fallback,
-                userTranscript: text,
-                allTasks: allTasks,
-                checkInType: checkInType,
-                context: modelContext
-            )
-            createdCount = changed.filter { !$0.isCompleted }.count
-            hasProcessed = true
-            lastProcessedText = text
-
-            if createdCount > 0 {
-                errorMessage = "Gemini unavailable — created task locally. (\(error.localizedDescription))"
-            } else {
-                errorMessage = error.localizedDescription
-            }
+            // User can tap mic manually if auto-restart fails.
         }
     }
 
-    private func localFallbackIntent(for text: String) -> PAIntent {
-        PAIntent(
-            intent: "create_task",
-            reply: "Got it — I'll track that for you.",
-            tasks: [ParsedTask(title: cleanedTitle(from: text))]
-        )
-    }
-
-    private func cleanedTitle(from text: String) -> String {
-        let cleaned = text
-            .replacingOccurrences(
-                of: "^(remind me to|remember to|add task|add a task|schedule|i need to|i have to)\\s*",
-                with: "",
-                options: [.regularExpression, .caseInsensitive]
-            )
-            .trimmingCharacters(in: .whitespacesAndNewlines)
-        let title = cleaned.isEmpty ? text : cleaned
-        return title.prefix(1).uppercased() + title.dropFirst()
-    }
 }

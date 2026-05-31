@@ -14,6 +14,29 @@ enum IntentProcessor {
         return f
     }()
 
+    static func sttIntent(from transcript: String) -> PAIntent {
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime]
+        let dueToday = formatter.string(from: endOfToday())
+        return PAIntent(
+            intent: "create_task",
+            reply: "Added to today.",
+            tasks: [ParsedTask(title: cleanedTitle(from: transcript), dueAt: dueToday)]
+        )
+    }
+
+    private static func cleanedTitle(from text: String) -> String {
+        let cleaned = text
+            .replacingOccurrences(
+                of: "^(remind me to|remember to|add task|add a task|schedule|i need to|i have to)\\s*",
+                with: "",
+                options: [.regularExpression, .caseInsensitive]
+            )
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+        let title = cleaned.isEmpty ? text : cleaned
+        return title.prefix(1).uppercased() + title.dropFirst()
+    }
+
     @MainActor
     static func apply(
         _ intent: PAIntent,
@@ -41,11 +64,12 @@ enum IntentProcessor {
             for parsed in parsedTasks {
                 let title = parsed.title.trimmingCharacters(in: .whitespacesAndNewlines)
                 guard !title.isEmpty else { continue }
+                let dueDate = parseDate(parsed.dueAt) ?? endOfToday()
                 let task = TaskItem(
                     title: title,
                     priority: parsePriority(parsed.priority),
-                    dueDate: parseDate(parsed.dueAt),
-                    reminderDate: parseDate(parsed.reminderAt) ?? parseDate(parsed.dueAt)
+                    dueDate: dueDate,
+                    reminderDate: parseDate(parsed.reminderAt) ?? dueDate
                 )
                 context.insert(task)
                 changedTasks.append(task)
@@ -123,7 +147,10 @@ enum IntentProcessor {
             .replacingOccurrences(of: "^(remind me to|remember to|add task|add a task|schedule|i need to|i have to)\\s*", with: "", options: [.regularExpression, .caseInsensitive])
             .trimmingCharacters(in: .whitespacesAndNewlines)
         let title = cleaned.isEmpty ? transcript : cleaned
-        return [ParsedTask(title: title.capitalized)]
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime]
+        let dueToday = formatter.string(from: endOfToday())
+        return [ParsedTask(title: title.capitalized, dueAt: dueToday)]
     }
 
     private static func parsePriority(_ raw: String?) -> TaskPriority {
@@ -136,6 +163,12 @@ enum IntentProcessor {
             return date
         }
         return parseNaturalDate(raw)
+    }
+
+    static func endOfToday() -> Date {
+        let calendar = Calendar.current
+        let start = calendar.startOfDay(for: Date())
+        return calendar.date(byAdding: DateComponents(day: 1, second: -1), to: start) ?? Date()
     }
 
     private static func parseNaturalDate(_ raw: String) -> Date? {

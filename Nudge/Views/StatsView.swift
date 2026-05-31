@@ -20,8 +20,10 @@ struct StatsView: View {
             ScrollView {
                 VStack(spacing: 20) {
                     HStack(spacing: 16) {
-                        statCard(title: "Current", value: "\(stats.currentStreak)", subtitle: "day streak")
-                        statCard(title: "Best", value: "\(stats.longestStreak)", subtitle: "day streak")
+                        statCard(title: "Current", value: "\(stats.currentStreak)", subtitle: "day streak", tint: AppTheme.accent)
+                            .staggeredAppear(index: 0)
+                        statCard(title: "Best", value: "\(stats.longestStreak)", subtitle: "day streak", tint: AppTheme.accentSecondary)
+                            .staggeredAppear(index: 1)
                     }
 
                     VStack(alignment: .leading, spacing: 12) {
@@ -29,28 +31,40 @@ struct StatsView: View {
                             .font(.headline)
                             .foregroundStyle(AppTheme.textPrimary)
                         Text("\(stats.weekCompletedCount) tasks completed")
-                            .font(.title2.bold())
-                            .foregroundStyle(AppTheme.accent)
+                            .font(.system(size: 32, weight: .bold, design: .rounded))
+                            .foregroundStyle(AppTheme.heroGradient)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .cardStyle()
+                    .staggeredAppear(index: 2)
 
                     VStack(alignment: .leading, spacing: 16) {
                         Text("Last 7 days")
                             .font(.headline)
                             .foregroundStyle(AppTheme.textPrimary)
 
-                        HStack(spacing: 12) {
+                        HStack(spacing: 10) {
                             ForEach(Array(activityDots.enumerated()), id: \.offset) { index, active in
-                                VStack(spacing: 6) {
-                                    Circle()
-                                        .fill(active ? AppTheme.accent : AppTheme.cardBackground)
-                                        .frame(width: 28, height: 28)
-                                        .overlay(
-                                            Circle().stroke(Color.white.opacity(0.1), lineWidth: 1)
+                                VStack(spacing: 8) {
+                                    RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                        .fill(
+                                            active
+                                                ? AnyShapeStyle(AppTheme.accentGradient)
+                                                : AnyShapeStyle(AppTheme.divider.opacity(0.5))
                                         )
+                                        .frame(height: 36)
+                                        .overlay {
+                                            if active {
+                                                Image(systemName: "checkmark")
+                                                    .font(.caption2.bold())
+                                                    .foregroundStyle(.white)
+                                            }
+                                        }
+                                        .scaleEffect(active ? 1 : 0.92)
+                                        .animation(.spring(response: 0.4, dampingFraction: 0.7).delay(Double(index) * 0.04), value: active)
+
                                     Text(dayLabel(offset: 6 - index))
-                                        .font(.caption2)
+                                        .font(.caption2.weight(.medium))
                                         .foregroundStyle(AppTheme.textSecondary)
                                 }
                                 .frame(maxWidth: .infinity)
@@ -58,25 +72,27 @@ struct StatsView: View {
                         }
                     }
                     .cardStyle()
+                    .staggeredAppear(index: 3)
                 }
                 .padding(AppTheme.spacing)
             }
-            .background(AppTheme.background)
+            .appScreenBackground()
             .navigationTitle("Stats")
+            .toolbarBackground(.hidden, for: .navigationBar)
             .onAppear {
                 AccountabilityService.refreshWeekCount(tasks: allTasks, in: modelContext)
             }
         }
     }
 
-    private func statCard(title: String, value: String, subtitle: String) -> some View {
+    private func statCard(title: String, value: String, subtitle: String, tint: Color) -> some View {
         VStack(alignment: .leading, spacing: 6) {
             Text(title)
-                .font(.caption)
+                .font(.caption.weight(.medium))
                 .foregroundStyle(AppTheme.textSecondary)
             Text(value)
                 .font(.system(size: 36, weight: .bold, design: .rounded))
-                .foregroundStyle(AppTheme.textPrimary)
+                .foregroundStyle(tint)
             Text(subtitle)
                 .font(.caption)
                 .foregroundStyle(AppTheme.textSecondary)

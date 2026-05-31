@@ -3,15 +3,24 @@ import SwiftUI
 struct OnboardingView: View {
     @State private var apiKey = ""
     @State private var errorMessage: String?
+    @State private var heroPulse = false
     let onComplete: () -> Void
 
     var body: some View {
         VStack(spacing: 32) {
             Spacer()
 
-            Image(systemName: "waveform.circle.fill")
-                .font(.system(size: 72))
-                .foregroundStyle(AppTheme.accent)
+            ZStack {
+                Circle()
+                    .fill(AppTheme.accentMuted)
+                    .frame(width: 120, height: 120)
+                    .scaleEffect(heroPulse ? 1.08 : 0.95)
+
+                Image(systemName: "waveform.circle.fill")
+                    .font(.system(size: 72))
+                    .foregroundStyle(AppTheme.heroGradient)
+                    .offset(y: heroPulse ? -3 : 3)
+            }
 
             VStack(spacing: 8) {
                 Text("Welcome to Nudge")
@@ -24,13 +33,17 @@ struct OnboardingView: View {
             }
 
             VStack(alignment: .leading, spacing: 8) {
-                Text("Gemini API key")
+                Text("Gemini API key (optional)")
+                    .font(.caption.weight(.medium))
+                    .foregroundStyle(AppTheme.textSecondary)
+                Text("Voice tasks work without a key. Add one later in Settings for smarter parsing.")
                     .font(.caption)
                     .foregroundStyle(AppTheme.textSecondary)
                 SecureField("Paste your key", text: $apiKey)
                     .padding()
                     .background(AppTheme.cardBackground)
-                    .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                    .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                    .shadow(color: AppTheme.cardShadow, radius: 8, y: 3)
                     .autocorrectionDisabled()
                     .textInputAutocapitalization(.never)
                 Link("Get a free key", destination: URL(string: "https://aistudio.google.com/apikey")!)
@@ -52,25 +65,29 @@ struct OnboardingView: View {
                     .font(.headline)
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(AppTheme.accent)
-                    .foregroundStyle(AppTheme.background)
-                    .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                    .background(AppTheme.accentGradient)
+                    .foregroundStyle(.white)
+                    .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                    .shadow(color: AppTheme.accent.opacity(0.3), radius: 12, y: 6)
             }
             .padding(.horizontal)
 
             Spacer()
         }
-        .background(AppTheme.background)
+        .appScreenBackground()
+        .onAppear {
+            withAnimation(.easeInOut(duration: 2.2).repeatForever(autoreverses: true)) {
+                heroPulse = true
+            }
+        }
     }
 
     private func finishOnboarding() async {
         let trimmed = apiKey.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmed.isEmpty else {
-            errorMessage = "Please enter your Gemini API key."
-            return
-        }
         do {
-            try KeychainHelper.saveAPIKey(trimmed)
+            if !trimmed.isEmpty {
+                try KeychainHelper.saveAPIKey(trimmed)
+            }
             _ = await NotificationService.requestAuthorization()
             await NotificationService.rescheduleDailyNotifications()
             AppSettings.shared.hasCompletedOnboarding = true

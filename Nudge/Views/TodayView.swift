@@ -1,6 +1,22 @@
 import SwiftUI
 import SwiftData
 
+private enum TodaySection: String, CaseIterable {
+    case overdue = "Needs attention"
+    case dueToday = "Due today"
+    case open = "Up next"
+    case done = "Wins today"
+
+    var icon: String {
+        switch self {
+        case .overdue: return "bell.badge.fill"
+        case .dueToday: return "sun.horizon.fill"
+        case .open: return "sparkles"
+        case .done: return "party.popper.fill"
+        }
+    }
+}
+
 struct TodayView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \TaskItem.createdAt, order: .reverse) private var allTasks: [TaskItem]
@@ -8,6 +24,8 @@ struct TodayView: View {
 
     @Binding var showVoiceSheet: Bool
     @Binding var checkInType: CheckInType?
+
+    @State private var heroVisible = false
 
     private var stats: UserStats {
         statsList.first ?? UserStats()
@@ -34,6 +52,10 @@ struct TodayView: View {
         }
     }
 
+    private var hasAnyTasks: Bool {
+        !overdue.isEmpty || !dueToday.isEmpty || !openAnytime.isEmpty || !doneToday.isEmpty
+    }
+
     private var greeting: String {
         let hour = Calendar.current.component(.hour, from: Date())
         switch hour {
@@ -43,83 +65,133 @@ struct TodayView: View {
         }
     }
 
+    private var dateLine: String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "EEEE, MMM d"
+        return formatter.string(from: Date())
+    }
+
     var body: some View {
         NavigationStack {
             ZStack(alignment: .bottom) {
                 ScrollView {
-                    VStack(alignment: .leading, spacing: 24) {
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text(greeting)
-                                .font(.largeTitle.bold())
-                                .foregroundStyle(AppTheme.textPrimary)
-                            StreakBadge(streak: stats.currentStreak)
-                        }
+                    VStack(alignment: .leading, spacing: 28) {
+                        heroHeader
 
-                        taskSection(title: "Overdue", tasks: overdue, accent: AppTheme.overdue)
-                        taskSection(title: "Due Today", tasks: dueToday, accent: AppTheme.accent)
-                        taskSection(title: "Open Tasks", tasks: openAnytime, accent: AppTheme.textPrimary)
-                        taskSection(title: "Done Today", tasks: doneToday, accent: AppTheme.success)
+                        sectionBlock(.overdue, tasks: overdue, color: AppTheme.overdue, startIndex: 0)
+                        sectionBlock(.dueToday, tasks: dueToday, color: AppTheme.accent, startIndex: 1)
+                        sectionBlock(.open, tasks: openAnytime, color: AppTheme.sky, startIndex: 2)
+                        sectionBlock(.done, tasks: doneToday, color: AppTheme.success, startIndex: 3)
 
-                        if overdue.isEmpty && dueToday.isEmpty && openAnytime.isEmpty && doneToday.isEmpty {
+                        if !hasAnyTasks {
                             EmptyStateView(
-                                icon: "mic.circle",
-                                title: "Nothing here yet",
-                                subtitle: "Tap the mic and tell me what you need to do."
+                                icon: "waveform.circle.fill",
+                                title: "Your canvas is clear",
+                                subtitle: "Hold the mic and tell me what you're tackling. I'll sort it into your day."
                             )
+                            .staggeredAppear(index: 4)
                         }
 
-                        Spacer(minLength: 100)
+                        Spacer(minLength: 110)
                     }
-                    .padding(AppTheme.spacing)
+                    .padding(.horizontal, AppTheme.spacing)
+                    .padding(.top, 8)
                 }
 
                 MicButton(isRecording: false) {
                     checkInType = nil
                     showVoiceSheet = true
                 }
-                .padding(.bottom, 24)
+                .padding(.bottom, 28)
             }
-            .background(AppTheme.background)
+            .appScreenBackground()
             .navigationTitle("")
             .navigationBarTitleDisplayMode(.inline)
+            .toolbarBackground(.hidden, for: .navigationBar)
             .onAppear {
                 _ = AccountabilityService.ensureStats(in: modelContext)
                 AccountabilityService.resetStreakIfInactive(in: modelContext)
+                withAnimation(.spring(response: 0.7, dampingFraction: 0.8)) {
+                    heroVisible = true
+                }
             }
         }
     }
 
-    @ViewBuilder
-    private func taskSection(title: String, tasks: [TaskItem], accent: Color) -> some View {
-        if !tasks.isEmpty {
-            VStack(alignment: .leading, spacing: 12) {
-                Text(title)
-                    .font(.headline)
-                    .foregroundStyle(accent)
+    private var heroHeader: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            Text(dateLine.uppercased())
+                .font(.caption.weight(.bold))
+                .tracking(1.2)
+                .foregroundStyle(AppTheme.textSecondary)
 
-                VStack(spacing: 0) {
-                    ForEach(tasks) { task in
-                        TaskRow(task: task) {
+            Text(greeting)
+                .font(.system(size: 34, weight: .bold, design: .rounded))
+                .foregroundStyle(AppTheme.heroGradient)
+
+            StreakBadge(streak: stats.currentStreak)
+        }
+        .opacity(heroVisible ? 1 : 0)
+        .offset(y: heroVisible ? 0 : 20)
+    }
+
+    @ViewBuilder
+    private func sectionBlock(
+        _ section: TodaySection,
+        tasks: [TaskItem],
+        color: Color,
+        startIndex: Int
+    ) -> some View {
+        if !tasks.isEmpty {
+            VStack(alignment: .leading, spacing: 14) {
+                HStack(spacing: 10) {
+                    Image(systemName: section.icon)
+                        .font(.subheadline.weight(.semibold))
+                        .foregroundStyle(.white)
+                        .frame(width: 32, height: 32)
+                        .background(
+                            LinearGradient(
+                                colors: [color, color.opacity(0.7)],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
+                        )
+                        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+
+                    Text(section.rawValue)
+                        .font(.headline)
+                        .foregroundStyle(AppTheme.textPrimary)
+
+                    Spacer()
+                }
+
+                VStack(spacing: 10) {
+                    ForEach(Array(tasks.enumerated()), id: \.element.id) { index, task in
+                        TaskRow(task: task, style: .card, accent: color) {
                             toggleTask(task)
                         }
-                        if task.id != tasks.last?.id {
-                            Divider().overlay(Color.white.opacity(0.08))
-                        }
+                        .staggeredAppear(index: startIndex * 3 + index + 1)
+                        .transition(.asymmetric(
+                            insertion: .scale(scale: 0.92).combined(with: .opacity),
+                            removal: .move(edge: .trailing).combined(with: .opacity)
+                        ))
                     }
                 }
-                .cardStyle()
             }
+            .animation(.spring(response: 0.45, dampingFraction: 0.82), value: tasks.map(\.id))
         }
     }
 
     private func toggleTask(_ task: TaskItem) {
-        if task.isCompleted {
-            task.isCompleted = false
-            task.completedAt = nil
-        } else {
-            task.markComplete()
-            NotificationService.cancelTaskReminder(for: task.id)
-            AccountabilityService.recordActivity(in: modelContext)
+        withAnimation(.spring(response: 0.4, dampingFraction: 0.78)) {
+            if task.isCompleted {
+                task.isCompleted = false
+                task.completedAt = nil
+            } else {
+                task.markComplete()
+                NotificationService.cancelTaskReminder(for: task.id)
+                AccountabilityService.recordActivity(in: modelContext)
+            }
         }
         try? modelContext.save()
         AccountabilityService.refreshWeekCount(tasks: allTasks, in: modelContext)

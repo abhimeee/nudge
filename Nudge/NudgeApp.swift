@@ -7,6 +7,10 @@ struct NudgeApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     @State private var showOnboarding = !AppSettings.shared.hasCompletedOnboarding
 
+    init() {
+        AppTheme.configureUIKitAppearance()
+    }
+
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([TaskItem.self, CheckIn.self, UserStats.self])
         let config = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
@@ -28,7 +32,7 @@ struct NudgeApp: App {
                     MainTabView()
                 }
             }
-            .preferredColorScheme(.dark)
+            .preferredColorScheme(.light)
         }
         .modelContainer(sharedModelContainer)
     }

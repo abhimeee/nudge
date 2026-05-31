@@ -10,46 +10,88 @@ struct SettingsView: View {
 
     var body: some View {
         NavigationStack {
-            Form {
-                Section("Gemini API") {
-                    SecureField("API key", text: $apiKey)
-                        .textContentType(.password)
-                        .autocorrectionDisabled()
-                        .textInputAutocapitalization(.never)
+            ScrollView {
+                VStack(alignment: .leading, spacing: 24) {
+                    settingsCard(
+                        title: "Gemini API",
+                        icon: "key.fill",
+                        tint: AppTheme.accent
+                    ) {
+                        VStack(alignment: .leading, spacing: 14) {
+                            Text("Connect voice parsing")
+                                .font(.subheadline)
+                                .foregroundStyle(AppTheme.textSecondary)
 
-                    Button("Save API Key") {
-                        saveAPIKey()
+                            SecureField("API key", text: $apiKey)
+                                .font(.body)
+                                .padding(14)
+                                .background(AppTheme.background)
+                                .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                                .textContentType(.password)
+                                .autocorrectionDisabled()
+                                .textInputAutocapitalization(.never)
+
+                            Button(action: saveAPIKey) {
+                                Text("Save API key")
+                                    .font(.subheadline.weight(.semibold))
+                                    .frame(maxWidth: .infinity)
+                                    .padding(.vertical, 12)
+                                    .background(AppTheme.accentGradient)
+                                    .foregroundStyle(.white)
+                                    .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                            }
+                            .buttonStyle(.plain)
+
+                            if let saveMessage {
+                                Text(saveMessage)
+                                    .font(.caption)
+                                    .foregroundStyle(AppTheme.textSecondary)
+                            }
+
+                            Link("Get a free key at Google AI Studio", destination: URL(string: "https://aistudio.google.com/apikey")!)
+                                .font(.caption)
+                                .foregroundStyle(AppTheme.accent)
+                        }
                     }
-                    .foregroundStyle(AppTheme.accent)
+                    .staggeredAppear(index: 0)
 
-                    if let saveMessage {
-                        Text(saveMessage)
+                    settingsCard(
+                        title: "Daily check-ins",
+                        icon: "bell.fill",
+                        tint: AppTheme.accentSecondary
+                    ) {
+                        VStack(spacing: 4) {
+                            scheduleRow(title: "Morning plan", selection: $morningTime)
+                            Divider().overlay(AppTheme.divider)
+                            scheduleRow(title: "Evening review", selection: $eveningTime)
+                            Divider().overlay(AppTheme.divider)
+                            scheduleRow(title: "Overdue nudge", selection: $overdueTime)
+                        }
+
+                        Button(action: saveSchedule) {
+                            Text("Save schedule")
+                                .font(.subheadline.weight(.semibold))
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 12)
+                                .background(AppTheme.accentGradient)
+                                .foregroundStyle(.white)
+                                .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                        }
+                        .buttonStyle(.plain)
+                        .padding(.top, 8)
+
+                        Text("Local notifications only. No server required.")
                             .font(.caption)
                             .foregroundStyle(AppTheme.textSecondary)
                     }
-
-                    Link("Get a free key at Google AI Studio", destination: URL(string: "https://aistudio.google.com/apikey")!)
-                        .font(.caption)
+                    .staggeredAppear(index: 1)
                 }
-
-                Section("Daily check-ins") {
-                    DatePicker("Morning plan", selection: $morningTime, displayedComponents: .hourAndMinute)
-                    DatePicker("Evening review", selection: $eveningTime, displayedComponents: .hourAndMinute)
-                    DatePicker("Overdue nudge", selection: $overdueTime, displayedComponents: .hourAndMinute)
-                }
-
-                Section {
-                    Button("Save schedule") {
-                        saveSchedule()
-                    }
-                    .foregroundStyle(AppTheme.accent)
-                } footer: {
-                    Text("Local notifications only — no server required.")
-                }
+                .padding(AppTheme.spacing)
+                .padding(.bottom, 24)
             }
-            .scrollContentBackground(.hidden)
-            .background(AppTheme.background)
+            .appScreenBackground()
             .navigationTitle("Settings")
+            .toolbarBackground(.hidden, for: .navigationBar)
             .onAppear {
                 apiKey = KeychainHelper.loadAPIKey() ?? ""
                 morningTime = dateFromComponents(settings.morningCheckInTime, defaultHour: 8)
@@ -57,6 +99,50 @@ struct SettingsView: View {
                 overdueTime = dateFromComponents(settings.overdueNudgeTime, defaultHour: 9)
             }
         }
+    }
+
+    private func settingsCard<Content: View>(
+        title: String,
+        icon: String,
+        tint: Color,
+        @ViewBuilder content: () -> Content
+    ) -> some View {
+        VStack(alignment: .leading, spacing: 16) {
+            HStack(spacing: 10) {
+                Image(systemName: icon)
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(.white)
+                    .frame(width: 32, height: 32)
+                    .background(
+                        LinearGradient(
+                            colors: [tint, tint.opacity(0.7)],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+                    .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+
+                Text(title)
+                    .font(.headline)
+                    .foregroundStyle(AppTheme.textPrimary)
+            }
+
+            content()
+        }
+        .cardStyle()
+    }
+
+    private func scheduleRow(title: String, selection: Binding<Date>) -> some View {
+        HStack {
+            Text(title)
+                .font(.body.weight(.medium))
+                .foregroundStyle(AppTheme.textPrimary)
+            Spacer()
+            DatePicker("", selection: selection, displayedComponents: .hourAndMinute)
+                .labelsHidden()
+                .tint(AppTheme.accent)
+        }
+        .padding(.vertical, 6)
     }
 
     private func saveAPIKey() {

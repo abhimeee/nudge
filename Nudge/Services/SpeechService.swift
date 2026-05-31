@@ -110,6 +110,11 @@ final class SpeechService {
     }
 
     @MainActor
+    func clearTranscript() {
+        transcript = ""
+    }
+
+    @MainActor
     private func completeFinalize(with text: String) {
         isWaitingForFinalize = false
         guard let continuation = finalizeContinuation else { return }

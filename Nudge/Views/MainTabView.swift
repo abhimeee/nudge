@@ -24,6 +24,8 @@ struct MainTabView: View {
                 .tag(3)
         }
         .tint(AppTheme.accent)
+        .toolbarBackground(AppTheme.cardBackground, for: .tabBar)
+        .toolbarBackground(.visible, for: .tabBar)
         .sheet(isPresented: $showVoiceSheet) {
             VoiceCaptureSheet(checkInType: checkInType)
         }

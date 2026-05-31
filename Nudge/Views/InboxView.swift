@@ -34,15 +34,23 @@ struct InboxView: View {
                     HStack(spacing: 8) {
                         ForEach(InboxFilter.allCases, id: \.self) { option in
                             Button {
-                                filter = option
+                                withAnimation(.spring(response: 0.35, dampingFraction: 0.78)) {
+                                    filter = option
+                                }
                             } label: {
                                 Text(option.rawValue)
-                                    .font(.subheadline.weight(.medium))
-                                    .foregroundStyle(filter == option ? AppTheme.background : AppTheme.textPrimary)
-                                    .padding(.horizontal, 14)
-                                    .padding(.vertical, 8)
-                                    .background(filter == option ? AppTheme.accent : AppTheme.cardBackground)
-                                    .clipShape(Capsule())
+                                    .font(.subheadline.weight(.semibold))
+                                    .foregroundStyle(filter == option ? .white : AppTheme.textPrimary)
+                                    .padding(.horizontal, 16)
+                                    .padding(.vertical, 9)
+                                    .background {
+                                        if filter == option {
+                                            Capsule().fill(AppTheme.accentGradient)
+                                        } else {
+                                            Capsule().fill(AppTheme.cardBackground)
+                                                .shadow(color: AppTheme.cardShadow, radius: 6, y: 2)
+                                        }
+                                    }
                             }
                             .buttonStyle(.plain)
                         }
@@ -52,38 +60,42 @@ struct InboxView: View {
 
                 if filteredTasks.isEmpty {
                     EmptyStateView(
-                        icon: "tray",
-                        title: "Inbox clear",
-                        subtitle: "No open tasks match this filter."
+                        icon: "tray.fill",
+                        title: "Inbox is zen",
+                        subtitle: "No open tasks match this filter. Nice work."
                     )
                     Spacer()
                 } else {
-                    List {
-                        ForEach(filteredTasks) { task in
-                            TaskRow(task: task) {
-                                toggleTask(task)
+                    ScrollView {
+                        LazyVStack(spacing: 10) {
+                            ForEach(Array(filteredTasks.enumerated()), id: \.element.id) { index, task in
+                                TaskRow(task: task, style: .card) {
+                                    toggleTask(task)
+                                }
+                                .staggeredAppear(index: index)
                             }
-                            .listRowBackground(AppTheme.cardBackground)
-                            .listRowSeparatorTint(.white.opacity(0.08))
                         }
+                        .padding(.horizontal, AppTheme.spacing)
+                        .padding(.bottom, 24)
                     }
-                    .listStyle(.plain)
-                    .scrollContentBackground(.hidden)
                 }
             }
-            .background(AppTheme.background)
+            .appScreenBackground()
             .navigationTitle("Inbox")
+            .toolbarBackground(.hidden, for: .navigationBar)
         }
     }
 
     private func toggleTask(_ task: TaskItem) {
-        if task.isCompleted {
-            task.isCompleted = false
-            task.completedAt = nil
-        } else {
-            task.markComplete()
-            NotificationService.cancelTaskReminder(for: task.id)
-            AccountabilityService.recordActivity(in: modelContext)
+        withAnimation(.spring(response: 0.4, dampingFraction: 0.78)) {
+            if task.isCompleted {
+                task.isCompleted = false
+                task.completedAt = nil
+            } else {
+                task.markComplete()
+                NotificationService.cancelTaskReminder(for: task.id)
+                AccountabilityService.recordActivity(in: modelContext)
+            }
         }
         try? modelContext.save()
         AccountabilityService.refreshWeekCount(tasks: allTasks, in: modelContext)

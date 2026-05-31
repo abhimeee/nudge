@@ -12,6 +12,7 @@ final class AppSettings {
         static let overdueHour = "overdueNudgeHour"
         static let overdueMinute = "overdueNudgeMinute"
         static let onboardingComplete = "onboardingComplete"
+        static let useLLM = "useLLM"
     }
 
     private let defaults = UserDefaults.standard
@@ -47,6 +48,15 @@ final class AppSettings {
 
     var hasAPIKey: Bool {
         KeychainHelper.loadAPIKey()?.isEmpty == false
+    }
+
+    /// When false, voice capture creates tasks from STT text only (no Gemini).
+    var useLLM: Bool {
+        get {
+            guard defaults.object(forKey: Keys.useLLM) != nil else { return false }
+            return defaults.bool(forKey: Keys.useLLM)
+        }
+        set { defaults.set(newValue, forKey: Keys.useLLM) }
     }
 
     private func timeComponents(hourKey: String, minuteKey: String, defaultHour: Int) -> DateComponents {
