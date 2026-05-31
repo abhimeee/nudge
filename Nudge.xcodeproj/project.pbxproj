@@ -1,0 +1,398 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		B10000000000000000000001 /* NudgeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000001 /* NudgeApp.swift */; };
+		B10000000000000000000002 /* AppTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000002 /* AppTheme.swift */; };
+		B10000000000000000000003 /* TaskItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000003 /* TaskItem.swift */; };
+		B10000000000000000000004 /* CheckIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000004 /* CheckIn.swift */; };
+		B10000000000000000000005 /* UserStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000005 /* UserStats.swift */; };
+		B10000000000000000000006 /* PAIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000006 /* PAIntent.swift */; };
+		B10000000000000000000007 /* KeychainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000007 /* KeychainHelper.swift */; };
+		B10000000000000000000008 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000008 /* AppSettings.swift */; };
+		B10000000000000000000009 /* GeminiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000009 /* GeminiService.swift */; };
+		B1000000000000000000000A /* SpeechService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2000000000000000000000A /* SpeechService.swift */; };
+		B1000000000000000000000B /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2000000000000000000000B /* NotificationService.swift */; };
+		B1000000000000000000000C /* AccountabilityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2000000000000000000000C /* AccountabilityService.swift */; };
+		B1000000000000000000000D /* IntentProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2000000000000000000000D /* IntentProcessor.swift */; };
+		B1000000000000000000000E /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2000000000000000000000E /* MainTabView.swift */; };
+		B1000000000000000000000F /* TodayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2000000000000000000000F /* TodayView.swift */; };
+		B10000000000000000000010 /* InboxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000010 /* InboxView.swift */; };
+		B10000000000000000000011 /* StatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000011 /* StatsView.swift */; };
+		B10000000000000000000012 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000012 /* SettingsView.swift */; };
+		B10000000000000000000013 /* VoiceCaptureSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000013 /* VoiceCaptureSheet.swift */; };
+		B10000000000000000000014 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000014 /* OnboardingView.swift */; };
+		B10000000000000000000015 /* EmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000015 /* EmptyStateView.swift */; };
+		B10000000000000000000016 /* StreakBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000016 /* StreakBadge.swift */; };
+		B10000000000000000000017 /* TaskRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000017 /* TaskRow.swift */; };
+		B10000000000000000000018 /* MicButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000018 /* MicButton.swift */; };
+		B10000000000000000000019 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000019 /* Assets.xcassets */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		B20000000000000000000001 /* NudgeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NudgeApp.swift; sourceTree = "<group>"; };
+		B20000000000000000000002 /* AppTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTheme.swift; sourceTree = "<group>"; };
+		B20000000000000000000003 /* TaskItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskItem.swift; sourceTree = "<group>"; };
+		B20000000000000000000004 /* CheckIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckIn.swift; sourceTree = "<group>"; };
+		B20000000000000000000005 /* UserStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStats.swift; sourceTree = "<group>"; };
+		B20000000000000000000006 /* PAIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PAIntent.swift; sourceTree = "<group>"; };
+		B20000000000000000000007 /* KeychainHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainHelper.swift; sourceTree = "<group>"; };
+		B20000000000000000000008 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		B20000000000000000000009 /* GeminiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeminiService.swift; sourceTree = "<group>"; };
+		B2000000000000000000000A /* SpeechService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechService.swift; sourceTree = "<group>"; };
+		B2000000000000000000000B /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		B2000000000000000000000C /* AccountabilityService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountabilityService.swift; sourceTree = "<group>"; };
+		B2000000000000000000000D /* IntentProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentProcessor.swift; sourceTree = "<group>"; };
+		B2000000000000000000000E /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
+		B2000000000000000000000F /* TodayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayView.swift; sourceTree = "<group>"; };
+		B20000000000000000000010 /* InboxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxView.swift; sourceTree = "<group>"; };
+		B20000000000000000000011 /* StatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsView.swift; sourceTree = "<group>"; };
+		B20000000000000000000012 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		B20000000000000000000013 /* VoiceCaptureSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceCaptureSheet.swift; sourceTree = "<group>"; };
+		B20000000000000000000014 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		B20000000000000000000015 /* EmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateView.swift; sourceTree = "<group>"; };
+		B20000000000000000000016 /* StreakBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreakBadge.swift; sourceTree = "<group>"; };
+		B20000000000000000000017 /* TaskRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskRow.swift; sourceTree = "<group>"; };
+		B20000000000000000000018 /* MicButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicButton.swift; sourceTree = "<group>"; };
+		B20000000000000000000019 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B2000000000000000000001A /* Nudge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Nudge.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B30000000000000000000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		B40000000000000000000001 = {
+			isa = PBXGroup;
+			children = (
+				B40000000000000000000002 /* Nudge */,
+				B40000000000000000000003 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		B40000000000000000000002 /* Nudge */ = {
+			isa = PBXGroup;
+			children = (
+				B20000000000000000000001 /* NudgeApp.swift */,
+				B40000000000000000000004 /* Theme */,
+				B40000000000000000000005 /* Models */,
+				B40000000000000000000006 /* Services */,
+				B40000000000000000000007 /* Views */,
+				B20000000000000000000019 /* Assets.xcassets */,
+			);
+			path = Nudge;
+			sourceTree = "<group>";
+		};
+		B40000000000000000000003 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B2000000000000000000001A /* Nudge.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B40000000000000000000004 /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+				B20000000000000000000002 /* AppTheme.swift */,
+			);
+			path = Theme;
+			sourceTree = "<group>";
+		};
+		B40000000000000000000005 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B20000000000000000000003 /* TaskItem.swift */,
+				B20000000000000000000004 /* CheckIn.swift */,
+				B20000000000000000000005 /* UserStats.swift */,
+				B20000000000000000000006 /* PAIntent.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		B40000000000000000000006 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				B20000000000000000000007 /* KeychainHelper.swift */,
+				B20000000000000000000008 /* AppSettings.swift */,
+				B20000000000000000000009 /* GeminiService.swift */,
+				B2000000000000000000000A /* SpeechService.swift */,
+				B2000000000000000000000B /* NotificationService.swift */,
+				B2000000000000000000000C /* AccountabilityService.swift */,
+				B2000000000000000000000D /* IntentProcessor.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		B40000000000000000000007 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				B2000000000000000000000E /* MainTabView.swift */,
+				B2000000000000000000000F /* TodayView.swift */,
+				B20000000000000000000010 /* InboxView.swift */,
+				B20000000000000000000011 /* StatsView.swift */,
+				B20000000000000000000012 /* SettingsView.swift */,
+				B20000000000000000000013 /* VoiceCaptureSheet.swift */,
+				B20000000000000000000014 /* OnboardingView.swift */,
+				B40000000000000000000008 /* Components */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		B40000000000000000000008 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				B20000000000000000000015 /* EmptyStateView.swift */,
+				B20000000000000000000016 /* StreakBadge.swift */,
+				B20000000000000000000017 /* TaskRow.swift */,
+				B20000000000000000000018 /* MicButton.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		B50000000000000000000001 /* Nudge */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B60000000000000000000003 /* Build configuration list for PBXNativeTarget "Nudge" */;
+			buildPhases = (
+				B50000000000000000000002 /* Sources */,
+				B30000000000000000000001 /* Frameworks */,
+				B50000000000000000000003 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Nudge;
+			productName = Nudge;
+			productReference = B2000000000000000000001A /* Nudge.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B70000000000000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					B50000000000000000000001 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+				};
+			};
+			buildConfigurationList = B60000000000000000000001 /* Build configuration list for PBXProject "Nudge" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = B40000000000000000000001;
+			productRefGroup = B40000000000000000000003 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B50000000000000000000001 /* Nudge */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		B50000000000000000000003 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B10000000000000000000019 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B50000000000000000000002 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B10000000000000000000001 /* NudgeApp.swift in Sources */,
+				B10000000000000000000002 /* AppTheme.swift in Sources */,
+				B10000000000000000000003 /* TaskItem.swift in Sources */,
+				B10000000000000000000004 /* CheckIn.swift in Sources */,
+				B10000000000000000000005 /* UserStats.swift in Sources */,
+				B10000000000000000000006 /* PAIntent.swift in Sources */,
+				B10000000000000000000007 /* KeychainHelper.swift in Sources */,
+				B10000000000000000000008 /* AppSettings.swift in Sources */,
+				B10000000000000000000009 /* GeminiService.swift in Sources */,
+				B1000000000000000000000A /* SpeechService.swift in Sources */,
+				B1000000000000000000000B /* NotificationService.swift in Sources */,
+				B1000000000000000000000C /* AccountabilityService.swift in Sources */,
+				B1000000000000000000000D /* IntentProcessor.swift in Sources */,
+				B1000000000000000000000E /* MainTabView.swift in Sources */,
+				B1000000000000000000000F /* TodayView.swift in Sources */,
+				B10000000000000000000010 /* InboxView.swift in Sources */,
+				B10000000000000000000011 /* StatsView.swift in Sources */,
+				B10000000000000000000012 /* SettingsView.swift in Sources */,
+				B10000000000000000000013 /* VoiceCaptureSheet.swift in Sources */,
+				B10000000000000000000014 /* OnboardingView.swift in Sources */,
+				B10000000000000000000015 /* EmptyStateView.swift in Sources */,
+				B10000000000000000000016 /* StreakBadge.swift in Sources */,
+				B10000000000000000000017 /* TaskRow.swift in Sources */,
+				B10000000000000000000018 /* MicButton.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		B80000000000000000000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		B80000000000000000000002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_OPTIMIZATION_LEVEL = s;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		B80000000000000000000003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 86F4558HNF;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Nudge needs the microphone to capture your voice.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Nudge uses Apple Speech to transcribe what you say.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.personal.nudgeabhi;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		B80000000000000000000004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 86F4558HNF;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Nudge needs the microphone to capture your voice.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Nudge uses Apple Speech to transcribe what you say.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.personal.nudgeabhi;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		B60000000000000000000001 /* Build configuration list for PBXProject "Nudge" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B80000000000000000000001 /* Debug */,
+				B80000000000000000000002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B60000000000000000000003 /* Build configuration list for PBXNativeTarget "Nudge" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B80000000000000000000003 /* Debug */,
+				B80000000000000000000004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B70000000000000000000001 /* Project object */;
+}
