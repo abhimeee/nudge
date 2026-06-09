@@ -167,9 +167,11 @@ struct TodayView: View {
 
                 VStack(spacing: 10) {
                     ForEach(Array(tasks.enumerated()), id: \.element.id) { index, task in
-                        TaskRow(task: task, style: .card, accent: color) {
+                        TaskRow(task: task, style: .card, accent: color, onToggle: {
                             toggleTask(task)
-                        }
+                        }, onCancel: {
+                            cancelTask(task)
+                        })
                         .staggeredAppear(index: startIndex * 3 + index + 1)
                         .transition(.asymmetric(
                             insertion: .scale(scale: 0.92).combined(with: .opacity),
@@ -196,5 +198,17 @@ struct TodayView: View {
         try? modelContext.save()
         AccountabilityService.refreshWeekCount(tasks: allTasks, in: modelContext)
         Task { await NotificationService.updateOverdueNudge(tasks: allTasks) }
+    }
+
+    private func cancelTask(_ task: TaskItem) {
+        Task { @MainActor in
+            withAnimation(.spring(response: 0.4, dampingFraction: 0.78)) {
+                NotificationService.cancelTaskReminder(for: task.id)
+                modelContext.delete(task)
+                try? modelContext.save()
+            }
+            AccountabilityService.refreshWeekCount(tasks: allTasks, in: modelContext)
+            await NotificationService.updateOverdueNudge(tasks: allTasks)
+        }
     }
 }

@@ -6,6 +6,7 @@ struct SettingsView: View {
     @State private var eveningTime = Date()
     @State private var overdueTime = Date()
     @State private var saveMessage: String?
+    @State private var useGeminiConversations = true
     @State private var settings = AppSettings.shared
 
     var body: some View {
@@ -56,6 +57,32 @@ struct SettingsView: View {
                     .staggeredAppear(index: 0)
 
                     settingsCard(
+                        title: "Conversation transcription",
+                        icon: "waveform.circle.fill",
+                        tint: AppTheme.sky
+                    ) {
+                        VStack(alignment: .leading, spacing: 14) {
+                            Text("In-person logs use Gemini for Hinglish (Hindi–English). Apple Speech provides a live preview only.")
+                                .font(.subheadline)
+                                .foregroundStyle(AppTheme.textSecondary)
+
+                            Toggle("Use Gemini for transcripts", isOn: $useGeminiConversations)
+                                .tint(AppTheme.accent)
+                                .disabled(!settings.hasAPIKey)
+                                .onChange(of: useGeminiConversations) { _, value in
+                                    settings.useGeminiForConversations = value
+                                }
+
+                            if !settings.hasAPIKey {
+                                Text("Add a Gemini API key above to enable cloud transcription.")
+                                    .font(.caption)
+                                    .foregroundStyle(AppTheme.textSecondary)
+                            }
+                        }
+                    }
+                    .staggeredAppear(index: 1)
+
+                    settingsCard(
                         title: "Daily check-ins",
                         icon: "bell.fill",
                         tint: AppTheme.accentSecondary
@@ -84,7 +111,7 @@ struct SettingsView: View {
                             .font(.caption)
                             .foregroundStyle(AppTheme.textSecondary)
                     }
-                    .staggeredAppear(index: 1)
+                    .staggeredAppear(index: 2)
                 }
                 .padding(AppTheme.spacing)
                 .padding(.bottom, 24)
@@ -94,6 +121,7 @@ struct SettingsView: View {
             .toolbarBackground(.hidden, for: .navigationBar)
             .onAppear {
                 apiKey = KeychainHelper.loadAPIKey() ?? ""
+                useGeminiConversations = settings.useGeminiForConversations
                 morningTime = dateFromComponents(settings.morningCheckInTime, defaultHour: 8)
                 eveningTime = dateFromComponents(settings.eveningCheckInTime, defaultHour: 20)
                 overdueTime = dateFromComponents(settings.overdueNudgeTime, defaultHour: 9)

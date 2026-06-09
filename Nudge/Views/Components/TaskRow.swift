@@ -10,6 +10,7 @@ struct TaskRow: View {
     var style: TaskRowStyle = .list
     var accent: Color = AppTheme.accent
     var onToggle: () -> Void
+    var onCancel: (() -> Void)? = nil
 
     @State private var justCompleted = false
     @State private var checkScale: CGFloat = 1
@@ -94,6 +95,16 @@ struct TaskRow: View {
 
             Spacer(minLength: 0)
 
+            if let onCancel, !task.isCompleted {
+                Button(action: onCancel) {
+                    Image(systemName: "xmark.circle.fill")
+                        .font(.title3)
+                        .foregroundStyle(AppTheme.textSecondary.opacity(0.45))
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel("Cancel task")
+            }
+
             Circle()
                 .fill(priorityColor.opacity(0.85))
                 .frame(width: 8, height: 8)
@@ -104,6 +115,13 @@ struct TaskRow: View {
         .clipShape(RoundedRectangle(cornerRadius: style == .card ? 16 : 0, style: .continuous))
         .shadow(color: style == .card ? AppTheme.cardShadow : .clear, radius: 8, y: 3)
         .bounceScale(trigger: justCompleted)
+        .contextMenu {
+            if let onCancel, !task.isCompleted {
+                Button(role: .destructive, action: onCancel) {
+                    Label("Cancel task", systemImage: "trash")
+                }
+            }
+        }
     }
 
     private func statusChip(_ text: String, color: Color, icon: String) -> some View {

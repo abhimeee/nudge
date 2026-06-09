@@ -21,7 +21,11 @@ final class SpeechService {
     private(set) var isRecording = false
     private(set) var authorizationStatus: SFSpeechRecognizerAuthorizationStatus = .notDetermined
 
-    private let speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "en-US"))
+    private let speechRecognizer: SFSpeechRecognizer?
+
+    init(locale: Locale = Locale(identifier: "en-US")) {
+        speechRecognizer = SFSpeechRecognizer(locale: locale)
+    }
     private let audioEngine = AVAudioEngine()
     private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
     private var recognitionTask: SFSpeechRecognitionTask?

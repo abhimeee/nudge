@@ -5,8 +5,9 @@ A native SwiftUI personal assistant for iPhone — capture tasks by voice, get r
 ## Features
 
 - Voice task capture via Apple Speech (on-device STT)
+- **Log tab** — record in-person conversations; Gemini transcribes Hinglish (with Apple Speech live preview)
 - Gemini AI parses natural language into tasks, due dates, and reminders
-- Today / Inbox / Stats views with streak tracking
+- Today / Log / Inbox / Stats views with streak tracking
 - Local notifications for reminders, overdue nudges, and daily check-ins
 - Dark aesthetic UI with amber accent
 
@@ -38,9 +39,9 @@ A native SwiftUI personal assistant for iPhone — capture tasks by voice, get r
 ```
 Nudge/
 ├── NudgeApp.swift          App entry + SwiftData container
-├── Models/                 TaskItem, CheckIn, UserStats, PAIntent
-├── Services/               Gemini, Speech, Notifications, Keychain
-├── Views/                  Today, Inbox, Stats, Settings, Voice sheet
+├── Models/                 TaskItem, CheckIn, UserStats, ConversationRecord, PAIntent
+├── Services/               Gemini, Speech, Audio recording, Notifications, Keychain
+├── Views/                  Today, Log, Inbox, Stats, Settings, Voice sheet
 └── Theme/                  Colors and styling
 ```
 

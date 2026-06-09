@@ -69,9 +69,11 @@ struct InboxView: View {
                     ScrollView {
                         LazyVStack(spacing: 10) {
                             ForEach(Array(filteredTasks.enumerated()), id: \.element.id) { index, task in
-                                TaskRow(task: task, style: .card) {
+                                TaskRow(task: task, style: .card, onToggle: {
                                     toggleTask(task)
-                                }
+                                }, onCancel: {
+                                    cancelTask(task)
+                                })
                                 .staggeredAppear(index: index)
                             }
                         }
@@ -100,5 +102,17 @@ struct InboxView: View {
         try? modelContext.save()
         AccountabilityService.refreshWeekCount(tasks: allTasks, in: modelContext)
         Task { await NotificationService.updateOverdueNudge(tasks: allTasks) }
+    }
+
+    private func cancelTask(_ task: TaskItem) {
+        Task { @MainActor in
+            withAnimation(.spring(response: 0.4, dampingFraction: 0.78)) {
+                NotificationService.cancelTaskReminder(for: task.id)
+                modelContext.delete(task)
+                try? modelContext.save()
+            }
+            AccountabilityService.refreshWeekCount(tasks: allTasks, in: modelContext)
+            await NotificationService.updateOverdueNudge(tasks: allTasks)
+        }
     }
 }
