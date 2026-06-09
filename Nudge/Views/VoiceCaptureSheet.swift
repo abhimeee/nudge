@@ -9,16 +9,16 @@ struct VoiceCaptureSheet: View {
 
     let checkInType: CheckInType?
 
-    @State private var speechService = SpeechService()
+    @State private var speechService = SpeechService(locale: Locale(identifier: "en-US"))
     @State private var isProcessing = false
     @State private var paReply: String?
     @State private var errorMessage: String?
     @State private var createdCount = 0
 
     private let hints = [
-        "Remind me to buy milk",
-        "Call the dentist",
-        "Pick up dry cleaning"
+        "Remind me to buy milk tomorrow",
+        "Call dentist on 17 May",
+        "Cancel buy milk"
     ]
 
     var body: some View {
@@ -200,12 +200,28 @@ struct VoiceCaptureSheet: View {
             checkInType: checkInType,
             context: modelContext
         )
-        let added = changed.filter { !$0.isCompleted }.count
-        if added > 0 {
-            createdCount += added
-            prepareForNextCapture()
-        } else {
-            errorMessage = "Couldn't create task. Try rephrasing, e.g. \"Remind me to buy milk\"."
+
+        switch intent.intent {
+        case "cancel_task":
+            if changed.isEmpty {
+                errorMessage = "Couldn't find that task to cancel."
+            } else {
+                prepareForNextCapture()
+            }
+        case "create_task":
+            let added = changed.filter { !$0.isCompleted }.count
+            if added > 0 {
+                createdCount += added
+                prepareForNextCapture()
+            } else {
+                errorMessage = "Couldn't create task. Try rephrasing, e.g. \"Remind me to buy milk tomorrow\"."
+            }
+        default:
+            if changed.isEmpty {
+                errorMessage = "I didn't catch that. Try again."
+            } else {
+                prepareForNextCapture()
+            }
         }
     }
 
