@@ -32,6 +32,19 @@
 		B10000000000000000000017 /* TaskRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000017 /* TaskRow.swift */; };
 		B10000000000000000000018 /* MicButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000018 /* MicButton.swift */; };
 		B10000000000000000000019 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000019 /* Assets.xcassets */; };
+		B1000000000000000000001A /* ConversationRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2000000000000000000001B /* ConversationRecord.swift */; };
+		B1000000000000000000001B /* AudioRecordingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2000000000000000000001C /* AudioRecordingService.swift */; };
+		B1000000000000000000001C /* ConversationTranscriptionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2000000000000000000001D /* ConversationTranscriptionCoordinator.swift */; };
+		B1000000000000000000001D /* ConversationListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2000000000000000000001E /* ConversationListView.swift */; };
+		B1000000000000000000001E /* ConversationRecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2000000000000000000001F /* ConversationRecordView.swift */; };
+		B1000000000000000000001F /* ConversationDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000020 /* ConversationDetailView.swift */; };
+		B10000000000000000000020 /* ConversationLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000021 /* ConversationLogView.swift */; };
+		B10000000000000000000021 /* JournalEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000022 /* JournalEntry.swift */; };
+		B10000000000000000000022 /* JournalTranscriptionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000023 /* JournalTranscriptionCoordinator.swift */; };
+		B10000000000000000000023 /* JournalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000024 /* JournalView.swift */; };
+		B10000000000000000000024 /* JournalListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000025 /* JournalListView.swift */; };
+		B10000000000000000000025 /* JournalRecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000026 /* JournalRecordView.swift */; };
+		B10000000000000000000026 /* JournalDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000027 /* JournalDetailView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -61,6 +74,19 @@
 		B20000000000000000000018 /* MicButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicButton.swift; sourceTree = "<group>"; };
 		B20000000000000000000019 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B2000000000000000000001A /* Nudge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Nudge.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B2000000000000000000001B /* ConversationRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationRecord.swift; sourceTree = "<group>"; };
+		B2000000000000000000001C /* AudioRecordingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecordingService.swift; sourceTree = "<group>"; };
+		B2000000000000000000001D /* ConversationTranscriptionCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationTranscriptionCoordinator.swift; sourceTree = "<group>"; };
+		B2000000000000000000001E /* ConversationListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationListView.swift; sourceTree = "<group>"; };
+		B2000000000000000000001F /* ConversationRecordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationRecordView.swift; sourceTree = "<group>"; };
+		B20000000000000000000020 /* ConversationDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationDetailView.swift; sourceTree = "<group>"; };
+		B20000000000000000000021 /* ConversationLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationLogView.swift; sourceTree = "<group>"; };
+		B20000000000000000000022 /* JournalEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalEntry.swift; sourceTree = "<group>"; };
+		B20000000000000000000023 /* JournalTranscriptionCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalTranscriptionCoordinator.swift; sourceTree = "<group>"; };
+		B20000000000000000000024 /* JournalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalView.swift; sourceTree = "<group>"; };
+		B20000000000000000000025 /* JournalListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalListView.swift; sourceTree = "<group>"; };
+		B20000000000000000000026 /* JournalRecordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalRecordView.swift; sourceTree = "<group>"; };
+		B20000000000000000000027 /* JournalDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalDetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +144,8 @@
 				B20000000000000000000004 /* CheckIn.swift */,
 				B20000000000000000000005 /* UserStats.swift */,
 				B20000000000000000000006 /* PAIntent.swift */,
+				B2000000000000000000001B /* ConversationRecord.swift */,
+				B20000000000000000000022 /* JournalEntry.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -132,6 +160,9 @@
 				B2000000000000000000000B /* NotificationService.swift */,
 				B2000000000000000000000C /* AccountabilityService.swift */,
 				B2000000000000000000000D /* IntentProcessor.swift */,
+				B2000000000000000000001C /* AudioRecordingService.swift */,
+				B2000000000000000000001D /* ConversationTranscriptionCoordinator.swift */,
+				B20000000000000000000023 /* JournalTranscriptionCoordinator.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -146,6 +177,14 @@
 				B20000000000000000000012 /* SettingsView.swift */,
 				B20000000000000000000013 /* VoiceCaptureSheet.swift */,
 				B20000000000000000000014 /* OnboardingView.swift */,
+				B20000000000000000000021 /* ConversationLogView.swift */,
+				B20000000000000000000024 /* JournalView.swift */,
+				B20000000000000000000025 /* JournalListView.swift */,
+				B20000000000000000000026 /* JournalRecordView.swift */,
+				B20000000000000000000027 /* JournalDetailView.swift */,
+				B2000000000000000000001E /* ConversationListView.swift */,
+				B2000000000000000000001F /* ConversationRecordView.swift */,
+				B20000000000000000000020 /* ConversationDetailView.swift */,
 				B40000000000000000000008 /* Components */,
 			);
 			path = Views;
@@ -255,6 +294,19 @@
 				B10000000000000000000016 /* StreakBadge.swift in Sources */,
 				B10000000000000000000017 /* TaskRow.swift in Sources */,
 				B10000000000000000000018 /* MicButton.swift in Sources */,
+				B1000000000000000000001A /* ConversationRecord.swift in Sources */,
+				B1000000000000000000001B /* AudioRecordingService.swift in Sources */,
+				B1000000000000000000001C /* ConversationTranscriptionCoordinator.swift in Sources */,
+				B1000000000000000000001D /* ConversationListView.swift in Sources */,
+				B1000000000000000000001E /* ConversationRecordView.swift in Sources */,
+				B1000000000000000000001F /* ConversationDetailView.swift in Sources */,
+				B10000000000000000000020 /* ConversationLogView.swift in Sources */,
+				B10000000000000000000021 /* JournalEntry.swift in Sources */,
+				B10000000000000000000022 /* JournalTranscriptionCoordinator.swift in Sources */,
+				B10000000000000000000023 /* JournalView.swift in Sources */,
+				B10000000000000000000024 /* JournalListView.swift in Sources */,
+				B10000000000000000000025 /* JournalRecordView.swift in Sources */,
+				B10000000000000000000026 /* JournalDetailView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -317,8 +369,9 @@
 				DEVELOPMENT_TEAM = 86F4558HNF;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Nudge needs the microphone to capture your voice.";
-				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Nudge uses Apple Speech to transcribe what you say.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Nudge needs the microphone to record conversations and capture voice tasks.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Nudge uses Apple Speech for live preview while recording conversations.";
+				INFOPLIST_KEY_UIBackgroundModes = audio;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -349,8 +402,9 @@
 				DEVELOPMENT_TEAM = 86F4558HNF;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Nudge needs the microphone to capture your voice.";
-				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Nudge uses Apple Speech to transcribe what you say.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Nudge needs the microphone to record conversations and capture voice tasks.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Nudge uses Apple Speech for live preview while recording conversations.";
+				INFOPLIST_KEY_UIBackgroundModes = audio;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

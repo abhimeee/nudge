@@ -49,7 +49,7 @@ enum AccountabilityService {
         try? context.save()
     }
 
-    static func activityForLastSevenDays(tasks: [TaskItem], checkIns: [CheckIn]) -> [Bool] {
+    static func activityForLastSevenDays(tasks: [TaskItem], checkIns: [CheckIn], journalEntries: [JournalEntry] = []) -> [Bool] {
         let calendar = Calendar.current
         return (0..<7).reversed().map { offset in
             guard let day = calendar.date(byAdding: .day, value: -offset, to: Date()) else { return false }
@@ -61,7 +61,8 @@ enum AccountabilityService {
                 return completedAt >= start && completedAt < end
             }
             let hadCheckIn = checkIns.contains { $0.date >= start && $0.date < end }
-            return completedTask || hadCheckIn
+            let hadJournal = journalEntries.contains { $0.recordedAt >= start && $0.recordedAt < end && $0.status == .completed }
+            return completedTask || hadCheckIn || hadJournal
         }
     }
 
