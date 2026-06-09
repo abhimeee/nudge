@@ -12,7 +12,7 @@ struct NudgeApp: App {
     }
 
     var sharedModelContainer: ModelContainer = {
-        let schema = Schema([TaskItem.self, CheckIn.self, UserStats.self])
+        let schema = Schema([TaskItem.self, CheckIn.self, UserStats.self, ConversationRecord.self, JournalEntry.self])
         let config = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
         do {
             return try ModelContainer(for: schema, configurations: [config])

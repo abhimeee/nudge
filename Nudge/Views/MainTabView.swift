@@ -11,17 +11,25 @@ struct MainTabView: View {
                 .tabItem { Label("Today", systemImage: "sun.max.fill") }
                 .tag(0)
 
+            JournalView()
+                .tabItem { Label("Journal", systemImage: "book.closed.fill") }
+                .tag(1)
+
+            ConversationLogView()
+                .tabItem { Label("Log", systemImage: "waveform.circle.fill") }
+                .tag(2)
+
             InboxView()
                 .tabItem { Label("Inbox", systemImage: "tray.fill") }
-                .tag(1)
+                .tag(3)
 
             StatsView()
                 .tabItem { Label("Stats", systemImage: "chart.bar.fill") }
-                .tag(2)
+                .tag(4)
 
             SettingsView()
                 .tabItem { Label("Settings", systemImage: "gearshape.fill") }
-                .tag(3)
+                .tag(5)
         }
         .tint(AppTheme.accent)
         .toolbarBackground(AppTheme.cardBackground, for: .tabBar)

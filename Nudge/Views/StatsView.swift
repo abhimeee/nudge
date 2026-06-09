@@ -6,13 +6,18 @@ struct StatsView: View {
     @Query private var statsList: [UserStats]
     @Query(sort: \TaskItem.completedAt, order: .reverse) private var allTasks: [TaskItem]
     @Query(sort: \CheckIn.date, order: .reverse) private var checkIns: [CheckIn]
+    @Query(sort: \JournalEntry.recordedAt, order: .reverse) private var journalEntries: [JournalEntry]
 
     private var stats: UserStats {
         statsList.first ?? UserStats()
     }
 
     private var activityDots: [Bool] {
-        AccountabilityService.activityForLastSevenDays(tasks: allTasks, checkIns: checkIns)
+        AccountabilityService.activityForLastSevenDays(
+            tasks: allTasks,
+            checkIns: checkIns,
+            journalEntries: journalEntries
+        )
     }
 
     var body: some View {

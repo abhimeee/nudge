@@ -13,6 +13,7 @@ final class AppSettings {
         static let overdueMinute = "overdueNudgeMinute"
         static let onboardingComplete = "onboardingComplete"
         static let useLLM = "useLLM"
+        static let useGeminiForConversations = "useGeminiForConversations"
     }
 
     private let defaults = UserDefaults.standard
@@ -57,6 +58,17 @@ final class AppSettings {
             return defaults.bool(forKey: Keys.useLLM)
         }
         set { defaults.set(newValue, forKey: Keys.useLLM) }
+    }
+
+    /// When true (default if API key exists), conversation logs use Gemini audio transcription.
+    var useGeminiForConversations: Bool {
+        get {
+            if defaults.object(forKey: Keys.useGeminiForConversations) == nil {
+                return hasAPIKey
+            }
+            return defaults.bool(forKey: Keys.useGeminiForConversations)
+        }
+        set { defaults.set(newValue, forKey: Keys.useGeminiForConversations) }
     }
 
     private func timeComponents(hourKey: String, minuteKey: String, defaultHour: Int) -> DateComponents {
